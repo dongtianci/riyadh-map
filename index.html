@@ -20,6 +20,19 @@ html, body { height:100%; font-family:'Segoe UI',Arial,sans-serif; }
 .legend h4 { margin-bottom:8px; font-size:13px; color:#333; border-bottom:1px solid #eee; padding-bottom:5px; }
 .leg-item { display:flex; align-items:center; margin:4px 0; }
 .swatch { width:22px; height:14px; border-radius:3px; margin-right:8px; flex-shrink:0; border:1px solid rgba(0,0,0,0.12); }
+.zone-label { background: none !important; border: none !important; box-shadow: none !important; }
+.zone-label span {
+    display: inline-block;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 1px 4px;
+    border-radius: 3px;
+    white-space: nowrap;
+    pointer-events: none;
+    line-height: 1.4;
+}
 </style>
 </head>
 <body>
@@ -63,18 +76,10 @@ for (const z of zonesData) {
     const center = bounds.getCenter();
     L.marker(center, {
         icon: L.divIcon({
-            className: '',
-            html: `<div style="
-                background: rgba(0,0,0,0.55);
-                color: #fff;
-                font-size: 10px;
-                font-weight: bold;
-                padding: 1px 4px;
-                border-radius: 3px;
-                white-space: nowrap;
-                pointer-events: none;
-            ">${idx}</div>`,
-            iconAnchor: [10, 8]
+            className: 'zone-label',
+            html: `<span>${idx}</span>`,
+            iconSize: null,
+            iconAnchor: [8, 8]
         })
     }).addTo(map);
 }
