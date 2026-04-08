@@ -39,15 +39,16 @@ const infoWindow = L.popup({ closeButton: false, closeOnClick: false });
 for (const z of zonesData) {
     if (!z.coords || z.coords.length < 3) continue;
     const latlngs = z.coords.map(c => [c[0], c[1]]);
+    const noPrice = z.raw_price === 0;
     const poly = L.polygon(latlngs, {
-        color: z.color,
-        fillColor: z.color,
-        fillOpacity: 0.55,
-        weight: 1.5,
+        color: noPrice ? '#999' : z.color,
+        fillColor: noPrice ? '#ffffff' : z.color,
+        fillOpacity: noPrice ? 0.9 : 0.55,
+        weight: noPrice ? 1 : 1.5,
         opacity: 0.9
     }).addTo(map);
 
-    const priceText = z.raw_price > 0 ? `<b>${z.price}</b> SAR/m²` : '暂无数据';
+    const priceText = z.raw_price > 0 ? `<b>${z.price}</b> SAR/m²` : '无价格';
     poly.bindTooltip(`<b>${z.name}</b><br>${priceText}`, {sticky: true});
 
     poly.on('mouseover', function() { this.setStyle({ fillOpacity: 0.8 }); });
@@ -69,7 +70,7 @@ legend.onAdd = function() {
 <div class="leg-item"><span class="swatch" style="background:#0099cc"></span>2,000 - 4,000 SAR/m² (39个)</div>
 <div class="leg-item"><span class="swatch" style="background:#6699ff"></span>0 - 2,000 SAR/m² (10个)</div>
 
-<div class="leg-item"><span class="swatch" style="background:#ccc"></span>暂无数据</div>`;
+<div class="leg-item"><span class="swatch" style="background:#fff; border:1px solid #999 !important;"></span>无价格</div>`;
     return div;
 };
 legend.addTo(map);
