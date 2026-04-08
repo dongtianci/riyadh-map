@@ -49,13 +49,34 @@ for (const z of zonesData) {
     }).addTo(map);
 
     const priceText = z.raw_price > 0 ? `<b>${z.price}</b> SAR/m²` : '无价格';
-    poly.bindTooltip(`<b>${z.name}</b><br>${priceText}`, {sticky: true});
+    const idx = zonesData.indexOf(z) + 1;
+    poly.bindTooltip(`<b>#${idx} ${z.name}</b><br>${priceText}`, {sticky: true});
 
     poly.on('mouseover', function() { this.setStyle({ fillOpacity: 0.8 }); });
     poly.on('mouseout',  function() { this.setStyle({ fillOpacity: 0.55 }); });
     poly.on('click', function() {
         map.fitBounds(this.getBounds(), {padding: [40, 40]});
     });
+
+    // 序号标签
+    const bounds = poly.getBounds();
+    const center = bounds.getCenter();
+    L.marker(center, {
+        icon: L.divIcon({
+            className: '',
+            html: `<div style="
+                background: rgba(0,0,0,0.55);
+                color: #fff;
+                font-size: 10px;
+                font-weight: bold;
+                padding: 1px 4px;
+                border-radius: 3px;
+                white-space: nowrap;
+                pointer-events: none;
+            ">${idx}</div>`,
+            iconAnchor: [10, 8]
+        })
+    }).addTo(map);
 }
 
 // 图例
